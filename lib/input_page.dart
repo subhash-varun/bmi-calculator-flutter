@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
+// Constants for UI colors
 const activeCardColor = Color(0xFF1D1E33);
 const inactiveCardColor = Color(0xFF111328);
+const bottomContainerColor = Color(0xFFEB1555);
+const bottomContainerHeight = 80.0;
 
+// Enum for gender selection
 enum Gender { male, female }
 
 class InputPage extends StatefulWidget {
@@ -13,6 +17,7 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+  // State variables
   Gender? selectedGender;
   double height = 180.0;
   double weight = 60.0;
@@ -29,11 +34,11 @@ class _InputPageState extends State<InputPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Gender selection Cards
+          // SECTION 1: Gender selection Cards
           Expanded(
             child: Row(
               children: [
-                // add gesture detector to make the card clickable
+                // Male card with gesture detector
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
@@ -41,7 +46,6 @@ class _InputPageState extends State<InputPage> {
                         selectedGender = Gender.male;
                       });
                     },
-                    // add a container inside gesture detector (i.e cards for male and female)
                     child: Container(
                       margin: EdgeInsets.all(15.0),
                       decoration: BoxDecoration(
@@ -51,7 +55,6 @@ class _InputPageState extends State<InputPage> {
                                 : inactiveCardColor,
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      // inside card container create a column widget to display text and below it icon
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -69,7 +72,7 @@ class _InputPageState extends State<InputPage> {
                     ),
                   ),
                 ),
-                // another gesture detector for female card
+                // Female card with gesture detector
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
@@ -77,7 +80,6 @@ class _InputPageState extends State<InputPage> {
                         selectedGender = Gender.female;
                       });
                     },
-                    // add a container inside gesture detector (i.e cards for male and female)
                     child: Container(
                       margin: EdgeInsets.all(15.0),
                       decoration: BoxDecoration(
@@ -87,14 +89,13 @@ class _InputPageState extends State<InputPage> {
                                 : inactiveCardColor,
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      // inside card container create a column widget to display text and below it icon
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.female, size: 80.0),
                           SizedBox(height: 15.0),
                           Text(
-                            'Male',
+                            'Female', // Fixed label from 'Male' to 'Female'
                             style: TextStyle(
                               fontSize: 18.0,
                               color: Color(0xFF8D8E98),
@@ -108,7 +109,8 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          // Height card
+
+          // SECTION 2: Height slider card
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(15.0),
@@ -118,7 +120,6 @@ class _InputPageState extends State<InputPage> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 child: Column(
-                  // card content text, slider and value
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
@@ -128,6 +129,7 @@ class _InputPageState extends State<InputPage> {
                         color: Color(0xFF8D8E98),
                       ),
                     ),
+                    // Height value display with units
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -149,11 +151,11 @@ class _InputPageState extends State<InputPage> {
                         ),
                       ],
                     ),
+                    // Custom styled slider
                     SliderTheme(
                       data: SliderTheme.of(context).copyWith(
                         activeTrackColor: Colors.white,
                         inactiveTrackColor: Color(0xFF8D8E98),
-                        // thumbColor: Color(0xFFEB1555),
                         overlayColor: Color(0x29EB1555),
                         thumbShape: RoundSliderThumbShape(
                           enabledThumbRadius: 15.0,
@@ -178,11 +180,12 @@ class _InputPageState extends State<InputPage> {
               ),
             ),
           ),
-          // Weight and Age cards
+
+          // SECTION 3: Weight and Age cards
           Expanded(
             child: Row(
               children: [
-                // weight card
+                // Weight card with increment/decrement buttons
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(15.0),
@@ -208,6 +211,7 @@ class _InputPageState extends State<InputPage> {
                               fontWeight: FontWeight.w900,
                             ),
                           ),
+                          // Weight adjustment controls
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -235,86 +239,82 @@ class _InputPageState extends State<InputPage> {
                     ),
                   ),
                 ),
+                // Age card with increment/decrement buttons
                 Expanded(
-                  child: Row(
-                    children: [
-                      // weight card
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Card(
-                            color: const Color(0xFF1D1E33),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Age',
-                                  style: TextStyle(
-                                    fontSize: 18.0,
-                                    color: Color(0xFF8D8E98),
-                                  ),
-                                ),
-                                Text(
-                                  age.toString(),
-                                  style: TextStyle(
-                                    fontSize: 50.0,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(Icons.remove),
-                                      onPressed: () {
-                                        setState(() {
-                                          age = age > 1 ? age - 1 : 18;
-                                        });
-                                      },
-                                    ),
-                                    SizedBox(width: 10.0),
-                                    IconButton(
-                                      icon: Icon(Icons.add),
-                                      onPressed: () {
-                                        setState(() {
-                                          age++;
-                                        });
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Card(
+                      color: const Color(0xFF1D1E33),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Age',
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              color: Color(0xFF8D8E98),
                             ),
                           ),
-                        ),
+                          Text(
+                            age.toString(),
+                            style: TextStyle(
+                              fontSize: 50.0,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          // Age adjustment controls
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.remove),
+                                onPressed: () {
+                                  setState(() {
+                                    age = age > 1 ? age - 1 : 1; // Fixed minimum age to 1
+                                  });
+                                },
+                              ),
+                              SizedBox(width: 10.0),
+                              IconButton(
+                                icon: Icon(Icons.add),
+                                onPressed: () {
+                                  setState(() {
+                                    age++;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-        // calculate button
-        GestureDetector(
-          child: Container(
-            color: const Color(0xFFEB1555),
-            margin: const EdgeInsets.only(top: 10.0),
-            width: double.infinity,
-            height: 80.0,
-            child: Center(
-              child: Text(
-                'CALCULATE',
-                style: TextStyle(
-                  fontSize: 25.0,
-                  fontWeight: FontWeight.bold,
-                )
+
+          // SECTION 4: Calculate button
+          GestureDetector(
+            child: Container(
+              color: bottomContainerColor,
+              margin: const EdgeInsets.only(top: 10.0),
+              width: double.infinity,
+              height: bottomContainerHeight,
+              child: Center(
+                child: Text(
+                  'CALCULATE',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                  )
+                ),
               ),
             ),
           ),
-        ),
         ],
       ),
     );
