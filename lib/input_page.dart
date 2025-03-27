@@ -1,3 +1,5 @@
+import 'package:bmi_calculator/calculator_brain.dart';
+import 'package:bmi_calculator/result_page.dart';
 import 'package:flutter/material.dart';
 
 // Constants for UI colors
@@ -22,6 +24,17 @@ class _InputPageState extends State<InputPage> {
   double height = 180.0;
   double weight = 60.0;
   int age = 25;
+
+  // Helper function to get gender as string
+  String getGenderString() {
+    if (selectedGender == Gender.male) {
+      return 'Male';
+    } else if (selectedGender == Gender.female) {
+      return 'Female';
+    } else {
+      return 'Not specified';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -273,7 +286,10 @@ class _InputPageState extends State<InputPage> {
                                 icon: Icon(Icons.remove),
                                 onPressed: () {
                                   setState(() {
-                                    age = age > 1 ? age - 1 : 1; // Fixed minimum age to 1
+                                    age =
+                                        age > 1
+                                            ? age - 1
+                                            : 1; // Fixed minimum age to 1
                                   });
                                 },
                               ),
@@ -299,6 +315,29 @@ class _InputPageState extends State<InputPage> {
 
           // SECTION 4: Calculate button
           GestureDetector(
+            onTap: () {
+              CalculatorBrain calc = CalculatorBrain(
+                height: height.toInt(),
+                weight: weight.toInt(),
+              );
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => ResultPage(
+                        bmiResult: calc.calculateBMI(),
+                        resultText: calc.getResult(),
+                        interpretation: calc.getInterpretation(),
+                        genderAdvice: calc.getGenderSpecificAdvice(
+                          getGenderString(),
+                        ),
+                        gender: getGenderString(),
+                        age: age,
+                      ),
+                ),
+              );
+            },
             child: Container(
               color: bottomContainerColor,
               margin: const EdgeInsets.only(top: 10.0),
@@ -307,10 +346,7 @@ class _InputPageState extends State<InputPage> {
               child: Center(
                 child: Text(
                   'CALCULATE',
-                  style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                  )
+                  style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
